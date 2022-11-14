@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TicketSystemBackend.Models;
+namespace TicketSystem.Data.Models;
 
 public partial class Bookmark
 {
-    public string UserId { get; set; } = null!;
+    public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? UserId { get; set; }
 
     public int? TicketId { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TicketSystemBackend.Models;
+namespace TicketSystem.Data.Models;
 
 public partial class Ticket
 {
@@ -24,6 +24,8 @@ public partial class Ticket
     public string? CompletedByEmail { get; set; }
 
     public bool Completed { get; set; }
+
+    public string? Resolution { get; set; }
 
     public virtual ICollection<Bookmark> Bookmarks { get; } = new List<Bookmark>();
 }

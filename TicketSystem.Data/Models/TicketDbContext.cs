@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace TicketSystemBackend.Models;
+namespace TicketSystem.Data.Models;
 
 public partial class TicketDbContext : DbContext
 {
@@ -21,24 +21,23 @@ public partial class TicketDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("DefaultConnection");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=TicketDb;Trusted_Connection=True;Encrypt=false;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Bookmark>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Bookmark__1788CC4C0F51FB02");
+            entity.HasKey(e => e.Id).HasName("PK__Bookmark__3214EC07AB014774");
 
             entity.ToTable("Bookmark");
 
             entity.Property(e => e.UserId)
                 .HasMaxLength(5)
                 .IsFixedLength();
-            entity.Property(e => e.Name).HasMaxLength(25);
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.Bookmarks)
                 .HasForeignKey(d => d.TicketId)
-                .HasConstraintName("FK__Bookmark__Ticket__403A8C7D");
+                .HasConstraintName("FK__Bookmark__Ticket__49C3F6B7");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
@@ -55,6 +54,7 @@ public partial class TicketDbContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(25);
             entity.Property(e => e.OpenedByEmail).HasMaxLength(50);
             entity.Property(e => e.OpenedByName).HasMaxLength(25);
+            entity.Property(e => e.Resolution).HasMaxLength(500);
         });
 
         OnModelCreatingPartial(modelBuilder);
