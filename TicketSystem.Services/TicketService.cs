@@ -16,7 +16,7 @@ namespace TicketSystem.Services
         Ticket GetTicketById(int id);
         Ticket CreateTicket(string name, string category, string detail, string openedByName, string openedByEmail);
         bool DeleteTicketById(int id);
-        Ticket UpdateTicket(Ticket t);
+        void UpdateTicket(Ticket t);
     }
     public class TicketService : ITicketService
     {
@@ -68,9 +68,11 @@ namespace TicketSystem.Services
             return _context.Tickets.Where(t => t.ToString().Contains(s)).ToList(); //test functionality
         }
 
-        public Ticket UpdateTicket(Ticket t)
+        public void UpdateTicket(Ticket item)//passing in a modified ticket. cannot change id on ticket
         {
-            throw new NotImplementedException();
+            var ticket = _context.Tickets.Find(item.Id);
+            _context.Entry(ticket).CurrentValues.SetValues(item);
+            _context.SaveChanges();
         }
     }
 }
