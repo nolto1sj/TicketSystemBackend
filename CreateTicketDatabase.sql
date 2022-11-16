@@ -11,7 +11,8 @@ CREATE TABLE Ticket
 	OpenedByEmail NVARCHAR(50),
 	CompletedByName NVARCHAR(25),
 	CompletedByEmail NVARCHAR(50),
-	Completed BIT NOT NULL
+	Completed BIT NOT NULL,
+	Resolution NVARCHAR(500)
 )
 
 CREATE TABLE Bookmark 
