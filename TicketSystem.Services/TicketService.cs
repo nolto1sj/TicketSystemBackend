@@ -17,16 +17,27 @@ namespace TicketSystem.Services
         Ticket CreateTicket(string name, string category, string detail, string openedByName, string openedByEmail);
         bool DeleteTicketById(int id);
         void UpdateTicket(Ticket t);
+
+        //METHODS FOR BOOKMARKS
+        ICollection<Bookmark> GetAllBookmarks();
+        public Bookmark AddToBookmarks(int id, string userId);
+        public List<Ticket> GetBookmarkTicketsFromUser(string userId);
+
     }
     public class TicketService : ITicketService
     {
         private readonly TicketDbContext _context;
-        //private readonly HttpClient _client;
 
         public TicketService(TicketDbContext context)  /*HttpClient client*/ //add later?
         {
             _context = context;
-            //_client = client;
+        }
+
+        //METHODS FOR TICKETS
+
+        public ICollection<Ticket> GetAllTickets()
+        {
+            return _context.Tickets.ToList();
         }
 
         public Ticket CreateTicket(string name, string category, string detail, string openedByName, string openedByEmail)
@@ -52,12 +63,7 @@ namespace TicketSystem.Services
             var rowDeletion = _context.Tickets.Where(t => t.Id == id).ExecuteDelete();
             if (rowDeletion > 0) return true; else return false;
         }
-
-        public ICollection<Ticket> GetAllTickets()
-        {
-            return _context.Tickets.ToList();
-        }
-
+       
         public Ticket? GetTicketById(int id)
         {
             return _context.Tickets.SingleOrDefault(t => t.Id == id);
@@ -73,6 +79,35 @@ namespace TicketSystem.Services
             var ticket = _context.Tickets.Find(item.Id);
             _context.Entry(ticket).CurrentValues.SetValues(item);
             _context.SaveChanges();
+        }
+
+        //METHODS FOR BOOKMARKS
+
+        public ICollection<Bookmark> GetAllBookmarks()
+        {
+            return _context.Bookmarks.ToList();
+        }
+        public Bookmark AddToBookmarks(int id, string userId)
+        {
+            var bookmark = new Bookmark() { TicketId = id, UserId = userId };
+            _context.Bookmarks.Add(bookmark);
+            _context.SaveChanges();
+            return bookmark;
+            //_context.Tickets
+            //    .Join(_context.Bookmarks,
+            //    ticket => ticket.Id,
+            //    bookmark => bookmark.TicketId,
+            //    (ticket, bookmark) => new { Ticket = ticket, Bookmark = bookmark })
+            //    .Where(bookmarks => bookmarks.Bookmark.TicketId == t.Id);
+        }
+        public List<Ticket> GetBookmarkTicketsFromUser(string userId)
+        {
+            var ticket = from e in _context.Tickets
+                         join b in _context.Bookmarks
+                              on e.Id equals b.TicketId
+                         where b.UserId == userId
+                         select e;
+            return ticket.ToList();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TicketSystem.Data;
 using TicketSystem.Data.Models;
 using TicketSystem.Services;
 
@@ -26,11 +27,11 @@ namespace TicketSystem.API.Controllers
 
         [Route("{id}")]
         [HttpPut]
-        //public ActionResult Put(string name, string category, string detail, string completedByName, string completedByEmail, bool completed, string resolution)
         public ActionResult Put(Ticket t)
         {
             _service.UpdateTicket(t);
             return Ok();
+
         }
 
         //[HttpDelete]
