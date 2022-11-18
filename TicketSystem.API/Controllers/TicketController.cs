@@ -25,6 +25,14 @@ namespace TicketSystem.API.Controllers
             return Ok(tickets);
         }
 
+        [Route("createticket")]
+        [HttpPost]
+        public ActionResult Post(Ticket ticket)
+        {
+            var newTicket = _service.CreateTicket(ticket.Name, ticket.Category, ticket.Detail, ticket.OpenedByName, ticket.OpenedByEmail);
+            return Ok(newTicket);
+        }
+
         [Route("{id}")]
         [HttpPut]
         public ActionResult Put(Ticket t)

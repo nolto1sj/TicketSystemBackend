@@ -93,12 +93,6 @@ namespace TicketSystem.Services
             _context.Bookmarks.Add(bookmark);
             _context.SaveChanges();
             return bookmark;
-            //_context.Tickets
-            //    .Join(_context.Bookmarks,
-            //    ticket => ticket.Id,
-            //    bookmark => bookmark.TicketId,
-            //    (ticket, bookmark) => new { Ticket = ticket, Bookmark = bookmark })
-            //    .Where(bookmarks => bookmarks.Bookmark.TicketId == t.Id);
         }
         public List<Ticket> GetBookmarkTicketsFromUser(string userId)
         {
